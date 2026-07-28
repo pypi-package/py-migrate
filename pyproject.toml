@@ -1,0 +1,49 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pw-migrate"
+version = "0.1.0"
+description = "Migration Framework for Peewee ORM"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+  { name = "Saurav Saini" },
+]
+dependencies = [
+  "typer>=0.9.0",
+  "rich>=13.0.0",
+  "peewee>=3.17.0",
+  "peewee-migrate>=1.12.0",
+  "tomli>=2.0.1; python_version < '3.11'",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "pytest-cov",
+  "ruff",
+  "black",
+  "mypy",
+]
+
+[project.scripts]
+pw-migrate = "pw_migrate.cli:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["pw_migrate"]
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+ignore_missing_imports = true
