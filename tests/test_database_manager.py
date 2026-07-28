@@ -31,7 +31,7 @@ def test_database_manager_memory():
     manager.drop_database()
 
 def test_database_manager_unsupported():
-    manager = DatabaseManager("postgresql://localhost/test")
+    manager = DatabaseManager("oracle://localhost/test")
     with pytest.raises(NotImplementedError):
         manager.create_database()
     with pytest.raises(NotImplementedError):

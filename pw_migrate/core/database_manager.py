@@ -42,9 +42,8 @@ class DatabaseManager:
         else:
             parsed = parse(self.db_url)
             db_name = parsed.get("database")
-            engine = parsed.get("engine", "")
             
-            if "Postgresql" in engine:
+            if self.db_url.startswith("postgres"):
                 conn = self._get_postgres_conn(parsed)
                 try:
                     with conn.cursor() as cursor:
@@ -53,7 +52,7 @@ class DatabaseManager:
                     raise MigrationError(f"Could not create database: {e}")
                 finally:
                     conn.close()
-            elif "MySQL" in engine:
+            elif self.db_url.startswith("mysql"):
                 conn = self._get_mysql_conn(parsed)
                 try:
                     with conn.cursor() as cursor:
@@ -63,7 +62,7 @@ class DatabaseManager:
                 finally:
                     conn.close()
             else:
-                raise NotImplementedError(f"Database creation for {engine} is not supported yet.")
+                raise NotImplementedError(f"Database creation for this URL is not supported yet.")
 
     def drop_database(self) -> None:
         if self.db_url.startswith("sqlite"):
@@ -77,9 +76,8 @@ class DatabaseManager:
         else:
             parsed = parse(self.db_url)
             db_name = parsed.get("database")
-            engine = parsed.get("engine", "")
             
-            if "Postgresql" in engine:
+            if self.db_url.startswith("postgres"):
                 conn = self._get_postgres_conn(parsed)
                 try:
                     with conn.cursor() as cursor:
@@ -90,7 +88,7 @@ class DatabaseManager:
                     raise MigrationError(f"Could not drop database: {e}")
                 finally:
                     conn.close()
-            elif "MySQL" in engine:
+            elif self.db_url.startswith("mysql"):
                 conn = self._get_mysql_conn(parsed)
                 try:
                     with conn.cursor() as cursor:
@@ -100,4 +98,4 @@ class DatabaseManager:
                 finally:
                     conn.close()
             else:
-                raise NotImplementedError(f"Database deletion for {engine} is not supported yet.")
+                raise NotImplementedError(f"Database deletion for this URL is not supported yet.")

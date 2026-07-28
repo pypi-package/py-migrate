@@ -17,7 +17,15 @@ def setup_history_table(db: Database, table_name: str = None) -> None:
         
     MigrationHistory._meta.database = db
     MigrationHistory._meta.table_name = table_name
-    db.create_tables([MigrationHistory], safe=True)
+    
+    try:
+        db.create_tables([MigrationHistory], safe=True)
+    except Exception as e:
+        import typer
+        from rich.console import Console
+        Console().print(f"[bold red]Database connection failed:[/bold red] {e}")
+        Console().print("[yellow]Hint: Ensure the database server is running and the database exists. You can create it using 'pw-migrate create-db'.[/yellow]")
+        raise typer.Exit(code=1)
 
 def get_applied_migrations(db: Database) -> List[MigrationHistory]:
     """Get all migrations that have been applied (status='UP')."""
