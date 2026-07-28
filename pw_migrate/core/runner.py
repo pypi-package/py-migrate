@@ -78,15 +78,22 @@ class MigratorRunner:
             filepath = os.path.join(self.migrate_dir, filename)
             file_checksum = calculate_checksum(filepath)
             
-            MigrationHistory.create(
-                version=version,
-                name=name,
-                checksum=file_checksum,
-                status="UP",
-                execution_time_ms=exec_time,
-                hostname=socket.gethostname(),
-                python_version=platform.python_version()
-            )
+            m = MigrationHistory.get_or_none(version=version)
+            if m:
+                m.status = "UP"
+                m.checksum = file_checksum
+                m.execution_time_ms = exec_time
+                m.save()
+            else:
+                MigrationHistory.create(
+                    version=version,
+                    name=name,
+                    checksum=file_checksum,
+                    status="UP",
+                    execution_time_ms=exec_time,
+                    hostname=socket.gethostname(),
+                    python_version=platform.python_version()
+                )
             executed.append(filename)
             
         return executed
@@ -163,15 +170,22 @@ class MigratorRunner:
             filepath = os.path.join(self.migrate_dir, target_file)
             file_checksum = calculate_checksum(filepath)
                 
-            MigrationHistory.create(
-                version=version,
-                name=name,
-                checksum=file_checksum,
-                status="UP",
-                execution_time_ms=int((time.time() - start_time) * 1000),
-                hostname=socket.gethostname(),
-                python_version=platform.python_version()
-            )
+            m = MigrationHistory.get_or_none(version=version)
+            if m:
+                m.status = "UP"
+                m.checksum = file_checksum
+                m.execution_time_ms = int((time.time() - start_time) * 1000)
+                m.save()
+            else:
+                MigrationHistory.create(
+                    version=version,
+                    name=name,
+                    checksum=file_checksum,
+                    status="UP",
+                    execution_time_ms=int((time.time() - start_time) * 1000),
+                    hostname=socket.gethostname(),
+                    python_version=platform.python_version()
+                )
         else:
             m = MigrationHistory.get_or_none(version=version, status="UP")
             if not m:
