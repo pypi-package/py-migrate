@@ -110,7 +110,7 @@ class MigratorRunner:
             start_time = time.time()
             
             if not fake:
-                self.router.rollback(migration_name)
+                self.router.run_one(migration_name, self.router.migrator, fake=False, downgrade=True)
                 
             m.status = "DOWN"
             m.execution_time_ms = int((time.time() - start_time) * 1000)
@@ -166,7 +166,7 @@ class MigratorRunner:
                 raise MigrationError(f"Migration {version} is not applied.")
                 
             if not fake:
-                self.router.rollback(migration_name)
+                self.router.run_one(migration_name, self.router.migrator, fake=False, downgrade=True)
                 
             m.status = "DOWN"
             m.execution_time_ms = int((time.time() - start_time) * 1000)
