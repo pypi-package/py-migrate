@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pw-migrate"
-version = "0.1.1"
+version = "0.1.2"
 description = "Migration Framework for Peewee ORM"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -27,6 +27,11 @@ dependencies = [
   "python-dotenv>=1.0.0",
   "tomli>=2.0.1; python_version < '3.11'",
 ]
+
+[project.urls]
+Homepage = "https://github.com/pypi-package/py-migrate"
+Repository = "https://github.com/pypi-package/py-migrate"
+"Bug Tracker" = "https://github.com/pypi-package/py-migrate/issues"
 
 [project.optional-dependencies]
 dev = [
