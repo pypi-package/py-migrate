@@ -30,8 +30,6 @@ from pw_migrate.commands.up import up_command
 from pw_migrate.config import load_config
 
 
-
-
 def _set_history_table(history_table: str):
     if history_table:
         import os

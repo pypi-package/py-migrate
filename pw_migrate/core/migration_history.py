@@ -1,4 +1,3 @@
-
 from peewee import Database
 
 from pw_migrate.config import load_config
