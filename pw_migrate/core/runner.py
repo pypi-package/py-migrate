@@ -86,15 +86,11 @@ class MigratorRunner:
 
     def run_rollback(self, version: str, fake: bool = False) -> list:
         with LockManager(self.db):
-            applied = MigrationHistory.select().where(MigrationHistory.status == "UP").order_by(MigrationHistory.version.desc())
-            
-            to_rollback = []
-            for m in applied:
-                if m.version == version:
-                    break
-                to_rollback.append(m)
+            m = MigrationHistory.get_or_none(version=version, status="UP")
+            if not m:
+                raise MigrationError(f"Migration {version} is not applied.")
                 
-            return self._do_rollback(to_rollback, fake)
+            return self._do_rollback([m], fake)
 
     def run_reset(self, fake: bool = False) -> list:
         with LockManager(self.db):
