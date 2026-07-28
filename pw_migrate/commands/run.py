@@ -1,6 +1,6 @@
 import typer
 from rich.console import Console
-from peewee import SqliteDatabase
+from playhouse.db_url import connect
 from pw_migrate.core.runner import MigratorRunner
 from pw_migrate.exceptions import MigrationError
 
@@ -18,7 +18,7 @@ def run_command(
         console.print("[red]Direction must be 'up' or 'down'[/red]")
         raise typer.Exit(code=1)
         
-    db = SqliteDatabase(db_url.replace("sqlite:///", ""))
+    db = connect(db_url)
     runner = MigratorRunner(db, migrate_dir=migration_dir)
     
     action_text = "Running" if direction == "up" else "Rolling back"

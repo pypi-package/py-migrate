@@ -9,6 +9,8 @@ def setup_history_table(db: Database, table_name: str = None) -> None:
         import os
         if "PW_MIGRATE_HISTORY_TABLE" in os.environ:
             table_name = os.environ["PW_MIGRATE_HISTORY_TABLE"]
+        elif "PEEWEE_MIGRATION_TABLE" in os.environ:
+            table_name = os.environ["PEEWEE_MIGRATION_TABLE"]
         else:
             config = load_config()
             table_name = config.get("history_table", "migration_history")

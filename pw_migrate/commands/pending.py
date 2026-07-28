@@ -1,7 +1,7 @@
 import typer
 from rich.console import Console
 from rich.table import Table
-from peewee import SqliteDatabase
+from playhouse.db_url import connect
 from pw_migrate.core.migration_history import setup_history_table, get_applied_migrations
 from pw_migrate.core.discovery import discover_migrations
 
@@ -9,7 +9,7 @@ console = Console()
 
 def pending_command(migration_dir: str = "migrations", db_url: str = "sqlite:///pw_migrate.db") -> None:
     """List pending migrations."""
-    db = SqliteDatabase(db_url.replace("sqlite:///", ""))
+    db = connect(db_url)
     setup_history_table(db)
     
     applied_versions = {m.version for m in get_applied_migrations(db)}

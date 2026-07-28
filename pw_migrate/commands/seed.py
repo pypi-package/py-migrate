@@ -1,6 +1,6 @@
 import typer
 from rich.console import Console
-from peewee import SqliteDatabase
+from playhouse.db_url import connect
 from pw_migrate.core.seeder import Seeder
 from pw_migrate.exceptions import MigrationError
 
@@ -11,7 +11,7 @@ def seed_command(
     db_url: str = "sqlite:///pw_migrate.db",
 ) -> None:
     """Run database seeders."""
-    db = SqliteDatabase(db_url.replace("sqlite:///", ""))
+    db = connect(db_url)
     seeder = Seeder(db, seeds_dir=seeds_dir)
     
     console.print("[blue]Starting database seeder...[/blue]")

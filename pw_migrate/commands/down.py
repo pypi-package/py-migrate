@@ -1,6 +1,6 @@
 import typer
 from rich.console import Console
-from peewee import SqliteDatabase
+from playhouse.db_url import connect
 from pw_migrate.core.runner import MigratorRunner
 
 console = Console()
@@ -12,7 +12,7 @@ def down_command(
     fake: bool = False
 ) -> None:
     """Rollback the latest migrations."""
-    db = SqliteDatabase(db_url.replace("sqlite:///", ""))
+    db = connect(db_url)
     runner = MigratorRunner(db, migrate_dir=migration_dir)
     
     console.print(f"[blue]Rolling back {steps} migration(s)...[/blue]")

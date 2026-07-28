@@ -51,6 +51,15 @@ database = "postgres://user:pass@localhost/prod"
 history_table = "prod_migration_history"
 ```
 
+### Environment Variables
+
+If you are deploying via Docker or CI/CD pipelines, you can skip the configuration file and configure `pw-migrate` entirely via native environment variables.
+
+The following variables are checked automatically if their respective CLI flags are omitted:
+- `DATABASE_URL`: Defines the database connection string.
+- `PEEWEE_MIGRATION_TABLE`: Overrides the table name used for tracking applied migrations.
+- `PW_MIGRATE_ENV`: Automatically sets the target environment block to load from your `.toml` file.
+
 ---
 
 ## 🛠 Quick Start

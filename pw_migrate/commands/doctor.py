@@ -1,7 +1,7 @@
 import typer
 from rich.console import Console
 from rich.table import Table
-from peewee import SqliteDatabase
+from playhouse.db_url import connect
 from pw_migrate.core.doctor import Doctor
 
 console = Console()
@@ -11,7 +11,7 @@ def doctor_command(
     db_url: str = "sqlite:///pw_migrate.db",
 ) -> None:
     """Run diagnostic checks on the migration environment."""
-    db = SqliteDatabase(db_url.replace("sqlite:///", ""))
+    db = connect(db_url)
     doctor = Doctor(db, migrate_dir=migrate_dir)
     
     console.print("[blue]Running Diagnostics...[/blue]\n")
