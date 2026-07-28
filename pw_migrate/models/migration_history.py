@@ -1,5 +1,7 @@
 import datetime
-from peewee import Model, CharField, DateTimeField, BigIntegerField
+
+from peewee import BigIntegerField, CharField, DateTimeField, Model
+
 
 class MigrationHistory(Model):
     version = CharField(max_length=14, unique=True)

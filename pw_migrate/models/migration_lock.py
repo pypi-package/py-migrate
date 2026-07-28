@@ -1,4 +1,5 @@
-from peewee import Model, IntegerField, BooleanField, DateTimeField, CharField
+from peewee import BooleanField, CharField, DateTimeField, IntegerField, Model
+
 
 class MigrationLock(Model):
     id = IntegerField(primary_key=True)

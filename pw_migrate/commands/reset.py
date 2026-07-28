@@ -1,27 +1,32 @@
-import typer
-from rich.console import Console
 from playhouse.db_url import connect
+from rich.console import Console
+
 from pw_migrate.core.runner import MigratorRunner
 
 console = Console()
 
+
 def reset_command(
-    migration_dir: str = "migrations", 
+    migration_dir: str = "migrations",
     db_url: str = "sqlite:///pw_migrate.db",
-    fake: bool = False
+    fake: bool = False,
 ) -> None:
     """Rollback everything."""
     db = connect(db_url)
     runner = MigratorRunner(db, migrate_dir=migration_dir)
-    
+
     console.print("[blue]Resetting all migrations...[/blue]")
     executed = runner.run_reset(fake=fake)
-    
+
     if not executed:
-        console.print("[green]Database is already empty (no migrations applied).[/green]")
+        console.print(
+            "[green]Database is already empty (no migrations applied).[/green]"
+        )
         return
-        
+
     for filename in executed:
         console.print(f"  [yellow]✓ Reverted[/yellow] {filename}")
-        
-    console.print(f"[bold green]Successfully reverted all {len(executed)} migrations.[/bold green]")
+
+    console.print(
+        f"[bold green]Successfully reverted all {len(executed)} migrations.[/bold green]"
+    )

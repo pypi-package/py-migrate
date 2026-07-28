@@ -1,6 +1,7 @@
 import hashlib
 import os
 
+
 def calculate_checksum(filepath: str) -> str:
     """Calculate the SHA256 checksum of a file's contents."""
     if not os.path.exists(filepath):

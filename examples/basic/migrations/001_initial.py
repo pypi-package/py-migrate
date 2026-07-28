@@ -15,6 +15,7 @@ def migrate(migrator, database, fake=False, **kwargs):
         );
     """)
 
+
 def rollback(migrator, database, fake=False, **kwargs):
-    migrator.sql('DROP TABLE users')
-    migrator.sql('DROP TABLE roles')
+    migrator.sql("DROP TABLE users")
+    migrator.sql("DROP TABLE roles")
