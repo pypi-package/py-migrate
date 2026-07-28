@@ -57,7 +57,7 @@ If you are deploying via Docker or CI/CD pipelines, you can skip the configurati
 
 The following variables are checked automatically if their respective CLI flags are omitted:
 - `DATABASE_URL`: Defines the database connection string.
-- `PEEWEE_MIGRATION_TABLE`: Overrides the table name used for tracking applied migrations (default: `migration_history`).
+- `PEEWEE_MIGRATION_TABLE`: Overrides the table name used for tracking applied migrations (default: `_pw_migrate_internal`).
 - `PW_MIGRATE_ENV`: Automatically sets the target environment block to load from your `.toml` file.
 
 ---

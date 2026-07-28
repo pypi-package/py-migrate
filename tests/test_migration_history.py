@@ -7,12 +7,12 @@ import datetime
 @pytest.fixture
 def db():
     database = SqliteDatabase(":memory:")
-    setup_history_table(database)
+    setup_history_table(database, table_name="_pw_migrate_internal")
     yield database
     database.close()
 
 def test_setup_history_table(db):
-    assert db.table_exists("migration_history")
+    assert db.table_exists("_pw_migrate_internal")
 
 def test_get_applied_migrations(db):
     MigrationHistory.create(version="20260728124500", name="create_users", status="UP")

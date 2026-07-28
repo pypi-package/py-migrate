@@ -20,7 +20,7 @@ class MigratorRunner:
         # We use peewee-migrate's Router for executing the actual python file,
         # but we use a distinct table for its internal history so it doesn't conflict
         # with our richer MigrationHistory model.
-        self.router = Router(self.db, migrate_dir=self.migrate_dir, migrate_table='peewee_migrate_history')
+        self.router = Router(self.db, migrate_dir=self.migrate_dir, migrate_table='_pw_migrate_peewee_engine')
 
     def _get_compiled_migrator(self):
         from peewee_migrate.migrator import Migrator

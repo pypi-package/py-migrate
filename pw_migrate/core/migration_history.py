@@ -13,7 +13,7 @@ def setup_history_table(db: Database, table_name: str = None) -> None:
             table_name = os.environ["PEEWEE_MIGRATION_TABLE"]
         else:
             config = load_config()
-            table_name = config.get("history_table", "migration_history")
+            table_name = config.get("history_table", "_pw_migrate_internal")
         
     MigrationHistory._meta.database = db
     MigrationHistory._meta.table_name = table_name

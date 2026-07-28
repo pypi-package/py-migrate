@@ -8,7 +8,7 @@ Create `pw_migrate.toml` in your project root:
 
 ```toml
 database = "sqlite:///dev.db"
-history_table = "migration_history"
+history_table = "_pw_migrate_internal"
 ```
 
 ## Environment Overlays

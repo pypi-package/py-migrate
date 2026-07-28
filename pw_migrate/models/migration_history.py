@@ -14,4 +14,4 @@ class MigrationHistory(Model):
     python_version = CharField(max_length=50, null=True)
 
     class Meta:
-        table_name = "migration_history"
+        table_name = "_pw_migrate_internal"

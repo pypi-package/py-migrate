@@ -25,7 +25,7 @@ def init_command():
     # 3. Create pw_migrate.toml
     if not os.path.exists("pw_migrate.toml"):
         with open("pw_migrate.toml", "w") as f:
-            f.write('database = "sqlite:///local.db"\nhistory_table = "migration_history"\n')
+            f.write('database = "sqlite:///local.db"\nhistory_table = "_pw_migrate_internal"\n')
         console.print("  [green]✓ Created[/green] pw_migrate.toml")
     else:
         console.print("  [yellow]- Skipped[/yellow] pw_migrate.toml (already exists)")
@@ -33,7 +33,7 @@ def init_command():
     # 4. Create .env.example
     if not os.path.exists(".env.example"):
         with open(".env.example", "w") as f:
-            f.write('DATABASE_URL=sqlite:///local.db\nPEEWEE_MIGRATION_TABLE=migration_history\n')
+            f.write('DATABASE_URL=sqlite:///local.db\nPEEWEE_MIGRATION_TABLE=_pw_migrate_internal\n')
         console.print("  [green]✓ Created[/green] .env.example")
     else:
         console.print("  [yellow]- Skipped[/yellow] .env.example (already exists)")
