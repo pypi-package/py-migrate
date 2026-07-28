@@ -101,13 +101,14 @@ def doctor(history_table: str = typer.Option(None, "--history-table", help="Over
     doctor_command(db_url=_get_db_url(db_url))
 
 @app.command()
-def up(steps: int = typer.Option(None, help="Number of migrations to run"),
+def up(version: str = typer.Argument(None, help="Specific version to run (optional)"),
+       steps: int = typer.Option(None, help="Number of migrations to run"),
        fake: bool = typer.Option(False, help="Fake the execution"),
        history_table: str = typer.Option(None, "--history-table", help="Override history table name (Fallback: PEEWEE_MIGRATION_TABLE env)"),
        db_url: str = typer.Option(None, "--database", help="Override database URL (Fallback: DATABASE_URL env)")) -> None:
-    """Run pending migrations."""
+    """Run pending migrations or a specific migration."""
     _set_history_table(history_table)
-    up_command(steps=steps, fake=fake, db_url=_get_db_url(db_url))
+    up_command(version=version, steps=steps, fake=fake, db_url=_get_db_url(db_url))
 
 @app.command()
 def down(steps: int = typer.Option(1, help="Number of migrations to rollback"),
