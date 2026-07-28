@@ -190,15 +190,20 @@ def main(
     env: str = typer.Option(None, "--env", "-e", help="Set the environment (Fallback: PW_MIGRATE_ENV env)")
 ) -> None:
     """Migration Framework for Peewee ORM."""
+    
+    import os
+    for d in ["migrations", "seeds"]:
+        if os.path.exists(d) and not os.path.isdir(d):
+            Console().print(f"[bold red]Error:[/bold red] '{d}' exists in your project but is a file, not a directory!")
+            Console().print(f"[yellow]Please delete or rename the '{d}' file so the framework can use it as a directory.[/yellow]")
+            raise typer.Exit(code=1)
+            
     if history_table:
-        import os
         os.environ["PW_MIGRATE_HISTORY_TABLE"] = history_table
     if db_url:
-        import os
         os.environ["PW_MIGRATE_DATABASE"] = db_url
     if env:
-        import os
         os.environ["PW_MIGRATE_ENV"] = env
 
 if __name__ == "__main__":
-    main()
+    app()

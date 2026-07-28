@@ -33,7 +33,7 @@ def init_command():
     # 4. Create .env.example
     if not os.path.exists(".env.example"):
         with open(".env.example", "w") as f:
-            f.write('DATABASE_URL=sqlite:///local.db\n')
+            f.write('DATABASE_URL=sqlite:///local.db\nPEEWEE_MIGRATION_TABLE=migration_history\n')
         console.print("  [green]✓ Created[/green] .env.example")
     else:
         console.print("  [yellow]- Skipped[/yellow] .env.example (already exists)")
