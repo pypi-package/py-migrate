@@ -22,6 +22,19 @@ class MigratorRunner:
         # with our richer MigrationHistory model.
         self.router = Router(self.db, migrate_dir=self.migrate_dir, migrate_table='peewee_migrate_history')
 
+    def _get_compiled_migrator(self):
+        from peewee_migrate.migrator import Migrator
+        migrator = Migrator(self.db)
+        applied = MigrationHistory.select().where(MigrationHistory.status == "UP").order_by(MigrationHistory.version.asc())
+        for m in applied:
+            name = f"{m.version}_{m.name}"
+            # Temporarily catch errors if file is missing during compile phase
+            try:
+                self.router.run_one(name, migrator, fake=True)
+            except Exception:
+                pass
+        return migrator
+
     def run_up(self, steps: int = None, fake: bool = False) -> list:
         with LockManager(self.db):
             return self._do_run_up(steps, fake)
@@ -57,7 +70,8 @@ class MigratorRunner:
             
             start_time = time.time()
             if not fake:
-                self.router.run(migration_name)
+                migrator = self._get_compiled_migrator()
+                self.router.run_one(migration_name, migrator, fake=False, downgrade=False)
             
             exec_time = int((time.time() - start_time) * 1000)
             
@@ -106,7 +120,8 @@ class MigratorRunner:
             start_time = time.time()
             
             if not fake:
-                self.router.run_one(migration_name, self.router.migrator, fake=False, downgrade=True)
+                migrator = self._get_compiled_migrator()
+                self.router.run_one(migration_name, migrator, fake=False, downgrade=True)
                 
             m.status = "DOWN"
             m.execution_time_ms = int((time.time() - start_time) * 1000)
@@ -142,7 +157,8 @@ class MigratorRunner:
                 raise MigrationError(f"Migration {version} is already applied.")
                 
             if not fake:
-                self.router.run(migration_name)
+                migrator = self._get_compiled_migrator()
+                self.router.run_one(migration_name, migrator, fake=False, downgrade=False)
                 
             filepath = os.path.join(self.migrate_dir, target_file)
             file_checksum = calculate_checksum(filepath)
@@ -162,7 +178,8 @@ class MigratorRunner:
                 raise MigrationError(f"Migration {version} is not applied.")
                 
             if not fake:
-                self.router.run_one(migration_name, self.router.migrator, fake=False, downgrade=True)
+                migrator = self._get_compiled_migrator()
+                self.router.run_one(migration_name, migrator, fake=False, downgrade=True)
                 
             m.status = "DOWN"
             m.execution_time_ms = int((time.time() - start_time) * 1000)
